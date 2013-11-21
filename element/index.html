@@ -12,34 +12,34 @@
       document.addEventListener('WebComponentsReady', function() {
         var CommandManager = document.querySelector('history-editor');
 
-        //custom events: always a list of operations
-        CommandManager.addEventListener('operations-undone', function(e) {
+        //custom events: always a list of commands
+        CommandManager.addEventListener('commands-undone', function(e) {
           console.log(e.type, e.detail.ops);
         });
 
-        CommandManager.addEventListener('operations-redone', function(e) {
+        CommandManager.addEventListener('commands-redone', function(e) {
           console.log(e.type, e.detail.ops);
         });
 
-        //Add a few operations to the stack
-        //operation class
-        Operation = function ( type, value, target)
+        //Add a few commands to the stack
+        //command class
+        Command = function ( type, value, target)
         {
           this.type = type;
           this.value = value;
           this.target = target;
         }
-        Operation.prototype.undo = function()
+        Command.prototype.undo = function()
         {
           //console.log("undoing", this.type);
         }
-        Operation.prototype.redo = function()
+        Command.prototype.redo = function()
         {
           //console.log("re-doing", this.type);
         }
 
-        CommandManager.addOperation( new Operation( "testOperation",42, {name:"Universe"} ) );
-        CommandManager.addOperation( new Operation( "someOtherOperation","elementary my dear watson", {name:"Holmes"} ) );
+        CommandManager.addCommand( new Command( "testCommand",42, {name:"Universe"} ) );
+        CommandManager.addCommand( new Command( "someOtherCommand","elementary my dear watson", {name:"Holmes"} ) );
 
 
       })

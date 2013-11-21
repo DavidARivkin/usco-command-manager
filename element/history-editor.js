@@ -8,10 +8,10 @@ Polymer('history-editor', {
     this.commandManager = new CommandManager();
   },
   //api
-  addOperation:function(operation)
+  addCommand:function(command)
   {
-    this.commandManager.addOperation(operation);
-    this.fire('operations-added', {ops: [operation]});
+    this.commandManager.addCommand(command);
+    this.fire('commands-added', {ops: [command]});
   },
   undo:function()
   {
@@ -23,21 +23,21 @@ Polymer('history-editor', {
   },
   undoMultiple:function(howMany)
   {
-    var operations = this.commandManager.undoMultiple(howMany);
-    if(operations.length > 0) { this.fire('operations-undone', {ops: operations}); }
+    var commands = this.commandManager.undoMultiple(howMany);
+    if(commands.length > 0) { this.fire('commands-undone', {ops: commands}); }
   },
   redoMultiple:function(howMany)
   {
-    var operations = this.commandManager.redoMultiple(howMany);
-    if(operations.length > 0) { this.fire('operations-redone', {ops: operations}); }
+    var commands = this.commandManager.redoMultiple(howMany);
+    if(commands.length > 0) { this.fire('commands-redone', {ops: commands}); }
   },
   //event handlers
   historyUndo:function(event, detail, sender)
   {
     var model = sender.templateInstance_.model;
-    var selectedOperation = model.operation;
-    var operationIndex = selectedOperation.index;
-    var howMany = (this.commandManager.undos.length-1)-operationIndex+1;
+    var selectedCommand = model.command;
+    var commandIndex = selectedCommand.index;
+    var howMany = (this.commandManager.undos.length-1)-commandIndex+1;
 
     this.undoMultiple(howMany);
 
@@ -47,8 +47,8 @@ Polymer('history-editor', {
   historyRedo:function(event, detail, sender)
   {
     var model = event.target.templateInstance.model;
-    var selectedOperation = model.operation;
-    var howMany = this.commandManager.redos.indexOf(selectedOperation)+1;
+    var selectedCommand = model.command;
+    var howMany = this.commandManager.redos.indexOf(selectedCommand)+1;
 
     this.redoMultiple(howMany);
 
