@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CommandManager</title>
+    <script src="polymer.min.js"></script>
+    <link rel="import" href="history-editor.html">
+  </head>
+  <body>
+    <history-editor style="color:black"> </history-editor>
+
+    <script>
+      document.addEventListener('WebComponentsReady', function() {
+        var CommandManager = document.querySelector('history-editor');
+
+        //custom events: always a list of operations
+        CommandManager.addEventListener('operations-undone', function(e) {
+          console.log(e.type, e.detail.ops);
+        });
+
+        CommandManager.addEventListener('operations-redone', function(e) {
+          console.log(e.type, e.detail.ops);
+        });
+
+        //Add a few operations to the stack
+        //operation class
+        Operation = function ( type, value, target)
+        {
+          this.type = type;
+          this.value = value;
+          this.target = target;
+        }
+        Operation.prototype.undo = function()
+        {
+          //console.log("undoing", this.type);
+        }
+        Operation.prototype.redo = function()
+        {
+          //console.log("re-doing", this.type);
+        }
+
+        CommandManager.addOperation( new Operation( "testOperation",42, {name:"Universe"} ) );
+        CommandManager.addOperation( new Operation( "someOtherOperation","elementary my dear watson", {name:"Holmes"} ) );
+
+
+      })
+    </script>
+  </body>
+</html>
